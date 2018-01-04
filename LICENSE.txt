@@ -1,5 +1,5 @@
 braidbot
-Copyright (c) 2018 james
+Copyright (c) 2018 James Cash
 
 This package is distributed under the GNU Lesser General Public
 License (LGPL).  This means that you can link braidbot into proprietary

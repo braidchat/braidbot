@@ -14,3 +14,5 @@ The easiest way to get started is to use the `braidbot/insta` language:
     #:bot-id "..."
     #:bot-token "..."))
 ```
+
+For a full example, see [reminderbot](https://github.com/braidchat/reminderbot).

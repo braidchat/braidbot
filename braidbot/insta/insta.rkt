@@ -19,6 +19,11 @@
 (define (listen-port port)
   (set! server-listen-port port))
 
+(define init-fn void)
+(provide on-init)
+(define (on-init f)
+  (set! init-fn f))
+
 ;; Check that id-stx is bound in body-stxs
 (define-for-syntax (check-for-def stx id-stx error-msg body-stxs)
   (with-syntax ([(pmb body ...) (local-expand
@@ -55,5 +60,5 @@
                        #'(body ...))])
        (quasisyntax/loc stx
          (#,@expanded
-          (provide #,act-on-message)
+          (init-fn)
           (serve #,bot-token #,act-on-message server-listen-port))))]))

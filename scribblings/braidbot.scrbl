@@ -7,4 +7,8 @@
 
 @defmodule[braidbot]
 
-Package Description Here
+@(define braid-link "https://github.com/braidchat/braid")
+
+@(define braid-link @hyperlink[braid-url]{Braid Chat})
+
+A package for writing @|braid-link| bots.

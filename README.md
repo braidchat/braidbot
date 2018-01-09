@@ -81,3 +81,39 @@ Then to create a standalone executable, with the libraries bundled in, use `raco
 `raco distribute deploy mycoolbot`
 
 This will create a directory called `deploy` that you can zip up, upload to your server, and run `bin/mycoolbot`.
+
+# Module Documentation
+
+## `braidbot/uuid`
+
+This module defines a `uuid` struct that is used to represent version 4 UUIDs.
+
+The following functions are provided:
+
+  - `make-uuid` `(-> uuid?)`: Generate a new, random UUIDv4.
+  - `uuid?` `(-> any boolean?)`: Predicate to check if something is a UUID struct.
+  - `uuid` `(-> integer? integer? uuid?)`: The struct itself. Used for constructing a UUID from the high and low 64 bits, respectively. Probably don't use this directly.
+  - `uuid-hi64` `(-> uuid? integer?)`: Getter to extract the high 64 bits of the UUID. Probably don't use this directly.
+  - `uuid-lo64` `(-> uuid? integer?)`: Getter to extract the low 64 bits of the UUID. Probably don't use this directly.
+
+## `braidbot/braid`
+
+This module provides functions for sending messages to braid.
+
+A message is an immutable hash with the following keys and values:
+
+  - `#:id`: `UUID`: The id of the message
+  - `#:content`: `String`: The body of the message
+  - `#:created-at`: `Date`: The time the message was created at
+  - `#:user-id`: `UUID`: The id of the sender
+  - `#:thread-id`: `UUID`: The id of the thread the message is in
+  - `#:group-id`: `UUID`: The id of the group the thread is in
+  - `#:mentioned-user-ids`: `(listof UUID)`: A list of the mentioned users in that message (*not* already tagged in the thread)
+  - `#:mentioned-tag-ids`: `(listof UUID)`: A list of the tags in that message (*not* already tagged in the thread)
+
+Note that when sending a message `user-id`, `group-id`, and `created-at` are optional, as the server will fill them in appropriately (and ignore whatever you set).
+
+The following functions are provided (where `message?` is written, treat that as a hash as described above):
+
+  - `send-message` `(-> message? #:bot-id string? #:bot-token string? (#:braid-url string?) any)`: Send the given message to Braid.
+  - `reply-to` `(-> message? string? #:bot-id string? #:bot-token string? (#:braid-url string?) any)`: Helper function to reply to the given message. That is, create a new message with the same thread as the given message with the content given by the string argument.

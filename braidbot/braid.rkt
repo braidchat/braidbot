@@ -1,15 +1,24 @@
 #lang racket/base
 
-(provide send-message reply-to)
-
 (require racket/port
          racket/string
+         racket/contract
          net/url
          net/base64
 
          "transit.rkt"
          "util.rkt"
          "uuid.rkt")
+
+(define message/c hash?)
+
+(provide (contract-out
+          [send-message (->* (message/c #:bot-id string? #:bot-token string?)
+                             (#:braid-url string?)
+                             any)]
+          [reply-to (->* (message/c string? #:bot-id string? #:bot-token string?)
+                         (#:braid-url string?)
+                         any)]))
 
 (define (basic-auth-header user pass)
   (~> (list user ":" pass)

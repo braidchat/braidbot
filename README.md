@@ -25,7 +25,7 @@ Install [Racket](https://racket-lang.org).
 
 Create a new project: `raco pkg new mycoolbot`
 
-Add dependency to `info.rkt`: `"https://github.com/braidchat/braidbot.git#v1.1"
+Add BraidBot as a dependency to `info.rkt`: `"https://github.com/braidchat/braidbot.git#v1.1"`
 
 Edit `main.rkt`.
 You can use the `braidbot/insta` language or require the library modules & use them directly, if you wish.
@@ -35,8 +35,8 @@ For the `insta` language, a good starting point is something like the following:
 ```racket
 #lang braidbot/insta
 
-;; Set the bot-id, bot-token, and braid-url in environment variables
-;; e.g.
+;; Set the bot-id, bot-token, and braid-url in environment variables.
+;; If doing this, you'd run the bot like
 ;; BOT_ID='...' BOT_TOKEN='...' BRAID_URL='...' racket -t main.rkt
 (define bot-id (getenv "BOT_ID"))
 (define bot-token (getenv "BOT_TOKEN"))

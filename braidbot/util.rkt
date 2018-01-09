@@ -1,39 +1,39 @@
 #lang racket/base
 
 (provide
- ->
- ->>
- some->
- some->>
+ ~>
+ ~>>
+ some~>
+ some~>>
  if-let)
 
-(define-syntax ->
+(define-syntax ~>
   (syntax-rules ()
     [(_ x) x]
     [(_ x (f a ...)) (f x a ...)]
     [(_ x f) (f x)]
-    [(_ x f g ...) (-> (-> x f) g ...)]))
+    [(_ x f g ...) (~> (~> x f) g ...)]))
 
-(define-syntax ->>
+(define-syntax ~>>
   (syntax-rules ()
     [(_ x (f a ...)) (f a ... x)]
     [(_ x f) (f x)]
-    [(_ x f g ...) (->> (->> x f) g ...)]))
+    [(_ x f g ...) (~>> (~>> x f) g ...)]))
 
-(define-syntax some->
+(define-syntax some~>
   (syntax-rules ()
     [(_ x) x]
     [(_ x (f a ...)) (if x (f x a ...) x)]
     [(_ x f) (if x (f x) x)]
     [(_ x f g ...) (if x
-                      (some-> (some-> x f) g ...)
+                      (some~> (some~> x f) g ...)
                       x)]))
 
-(define-syntax some->>
+(define-syntax some~>>
   (syntax-rules ()
     [(_ x (f a ...)) (if x (f a ... x) x)]
     [(_ x f) (if x (f x) x)]
-    [(_ x f g ...) (if x (some->> (some->> x f) g ...) x)]))
+    [(_ x f g ...) (if x (some~>> (some~>> x f) g ...) x)]))
 
 (define-syntax if-let
   (syntax-rules ()

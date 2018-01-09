@@ -16,7 +16,7 @@
 (define (transit->form transit)
   (match transit
     [(hash-table (_ _) ...)
-     (-> transit
+     (~> transit
          (hash-map (λ (k v) (cons (transit->form k) (transit->form v))))
          make-immutable-hash)]
     [(regexp #rx"^~:(.*)$" (list _ kw)) (string->keyword kw)]
@@ -27,7 +27,7 @@
     [_ transit]))
 
 (define (unpack bytes)
-  (-> (call-with-input-bytes
+  (~> (call-with-input-bytes
        bytes
        (λ (in) (msgpack:unpack in)))
       transit->form))
@@ -35,7 +35,7 @@
 (define (form->transit form)
   (match form
     [(hash-table (_ _) ...)
-     (-> form
+     (~> form
          (hash-map (λ (k v) (cons (form->transit k) (form->transit v))))
          make-immutable-hash)]
     [(? keyword? kw) (string-append "~:" (keyword->string kw))]
@@ -48,4 +48,4 @@
 (define (pack thing)
   (call-with-output-bytes
    (λ (out)
-     (-> thing form->transit (msgpack:pack out)))))
+     (~> thing form->transit (msgpack:pack out)))))

@@ -13,8 +13,8 @@
 
 (define (make-handler bot-token act-on-message)
   (λ (request)
-    (let ([body (-> request request-post-data/raw)]
-          [sig (some->> request request-headers (assoc 'x-braid-signature) cdr)])
+    (let ([body (~> request request-post-data/raw)]
+          [sig (some~>> request request-headers (assoc 'x-braid-signature) cdr)])
       (if (and sig body
                (string=? sig
                          (bytes->hex-string (hmac-sha256 bot-token body))))

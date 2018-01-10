@@ -25,7 +25,7 @@ Install [Racket](https://download.racket-lang.org/).
 
 Create a new project: `raco pkg new mycoolbot`
 
-Add BraidBot as a dependency to `info.rkt`: `"https://github.com/braidchat/braidbot.git#v1.1"`
+Add BraidBot as a dependency to `info.rkt`: `"https://github.com/braidchat/braidbot.git#v2.0"`
 
 Edit `main.rkt`.
 You can use the `braidbot/insta` language or require the library modules & use them directly, if you wish.

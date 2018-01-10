@@ -21,7 +21,7 @@ For a full example, see [reminderbot](https://github.com/braidchat/reminderbot).
 
 ## Creating a Bot
 
-Install [Racket](https://racket-lang.org).
+Install [Racket](https://download.racket-lang.org/).
 
 Create a new project: `raco pkg new mycoolbot`
 

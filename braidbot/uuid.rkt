@@ -1,8 +1,11 @@
 #lang racket/base
-
-(provide uuid uuid? uuid-hi64 uuid-lo64 make-uuid)
+;;; Implementation of RFC4122 UUID v4
+(provide uuid uuid? uuid-hi64 uuid-lo64 make-uuid uuid->string)
 
 (require racket/random
+         racket/string
+         racket/format
+         (only-in file/sha1 bytes->hex-string)
 
          "util.rkt")
 
@@ -51,3 +54,41 @@
                                  (bitwise-not)))
                 (bitwise-ior (~> 1 (arithmetic-shift (- 64 7)))))])
     (uuid hi lo)))
+
+(define (hex n [min-width 2])
+  (~r n #:base 16 #:min-width min-width #:pad-string "0"))
+
+;; UUID                   = time-low "-" time-mid "-"
+;;                          time-high-and-version "-"
+;;                          clock-seq-and-reserved
+;;                          clock-seq-low "-" node
+;; time-low               = 4hexOctet
+;; time-mid               = 2hexOctet
+;; time-high-and-version  = 2hexOctet
+;; clock-seq-and-reserved = hexOctet
+;; clock-seq-low          = hexOctet
+;; node                   = 6hexOctet
+;; hexOctet               = hexDigit hexDigit
+;; hexDigit =
+;;       "0" / "1" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9" /
+;;       "a" / "b" / "c" / "d" / "e" / "f" /
+;;       "A" / "B" / "C" / "D" / "E" / "F"
+(define (uuid->string uuid)
+  (let* ([hi (uuid-hi64 uuid)]
+         [lo (uuid-lo64 uuid)]
+         [time-low (bitwise-bit-field hi 32 64)]
+         [time-mid (bitwise-bit-field hi 16 32)]
+         [time-hi-and-version (bitwise-bit-field hi 0 16)]
+         [clock-seq-and-reservered (bitwise-bit-field lo 56 64)]
+         [clock-seq-low (bitwise-bit-field lo 48 56)]
+         [node (bitwise-bit-field lo 0 48)])
+    (string-join
+     (list
+      (hex time-low 8)
+      (hex time-mid 4)
+      (hex time-hi-and-version 4)
+      (string-append
+       (hex clock-seq-and-reservered 2)
+       (hex clock-seq-low 2))
+      (hex node 12))
+     "-")))

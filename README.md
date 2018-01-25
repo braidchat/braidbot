@@ -74,7 +74,7 @@ Once the package is installed, you can run the bot with `racket -t main.rkt`.
 
 ## Deploying Your Bot
 
-Once you have your bot ready, you can create an executable using `raco exe main.rkt -o mycoolbot`.
+Once you have your bot ready, you can create an executable using `raco exe -o mycoolbot main.rkt`.
 
 Then to create a standalone executable, with the libraries bundled in, use `raco distribute`, like:
 
